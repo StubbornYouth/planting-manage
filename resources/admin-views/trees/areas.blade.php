@@ -2,7 +2,7 @@
 
 @section('content')
 
-    {{--@include('admin::search.items-items')--}}
+    @include('admin::search.trees-areas')
 
     <div class="row">
         <div class="col-md-12">
