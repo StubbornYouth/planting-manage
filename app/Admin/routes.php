@@ -20,7 +20,8 @@ Route::group([
         ], function(){
             Route::resource('areas','AreaController')->except('show');
             Route::get('areas/check','AreaController@checkName')->name('areas.check');
-            //Route::resource('categories','CategoryController')->except('show');
+            Route::resource('categories','CategoryController')->except('show');
+            Route::get('categories/check','CategoryController@checkName')->name('categories.check');
             //Route::resource('trees','TreeController')->except('show');
         });
     });

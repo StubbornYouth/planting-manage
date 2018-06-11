@@ -39,37 +39,52 @@ class AreaController extends Controller
         return view('admin::trees.area-create');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
-        $area = new Area();
-        $area->name = $request->name;
-        $area->status = $request->status;
-        $area->order = $request->order;
-        $area->save();
+        Area::create($request->all());
         return redirect()->route('admin::areas.index');
     }
 
+    /**
+     * @param Area $area
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function edit(Area $area)
     {
         config(['admin.header' => '树木区域','admin.description' => '编辑']);
         return view('admin::trees.area-edit', compact('area'));
     }
 
+    /**
+     * @param Request $request
+     * @param Area $area
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, Area $area)
     {
-        $area->name = $request->name;
-        $area->status = $request->status;
-        $area->order = $request->order;
-        $area->save();
+        $area->update($request->all());
         return redirect()->route('admin::areas.index');
     }
 
+    /**
+     * @param Area $area
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
     public function destroy(Area $area)
     {
         $area->delete();
         return response()->json(['status' => 1, 'message' => '成功']);
     }
 
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function checkName(Request $request)
     {
         if($request->get('current_name')) {
@@ -86,6 +101,10 @@ class AreaController extends Controller
 
     }
 
+    /**
+     * @param $request
+     * @return array
+     */
     protected function screening_conditions($request)
     {
         $data=[];
