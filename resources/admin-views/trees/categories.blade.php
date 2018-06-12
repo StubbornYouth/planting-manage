@@ -2,7 +2,7 @@
 
 @section('content')
 
-    {{--@include('admin::search.trees-areas')--}}
+    @include('admin::search.trees-categories')
 
     <div class="row">
         <div class="col-md-12">
@@ -63,6 +63,28 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+ 
+            <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h4 class="modal-title">分类图片</h4>
+                </div>
+ 
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+                    <img src="" id='show-image' width="295" alt="显示失败" />
+                </div>
+ 
+                <!-- 模态框底部 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -70,14 +92,17 @@
     <script>
         $(function (){
             $('.popover-show').popover();
-            $('.popover-show').on('click', function () {
-                if($(this).text() == '查看'){
-                    $(this).html('关闭');
-                }
-                else {
-                    $(this).html('查看');
-                }
-            })
+        });
+        
+        $("#filter-modal .submit").click(function () {
+            $("#filter-modal").modal('toggle');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        });
+
+        $('.show-image').click(function (){
+            $path = $(this).attr('data-img');
+            $('#show-image').attr('src',$path);
         });
     </script>
 @endsection

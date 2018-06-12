@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">创建分类</h3>
+                    <h3 class="box-title">编辑分类</h3>
                     <div class="box-tools">
                         <div class="btn-group pull-right" style="margin-right: 10px">
                             <a href="{{ route('admin::categories.index') }}" class="btn btn-sm btn-default"><i class="fa fa-list"></i>&nbsp;列表</a>
@@ -14,8 +14,9 @@
                         </div>
                     </div>
                 </div>
-                <form id="post-form" class="form-horizontal" action="{{ route('admin::categories.store') }}" method="post" enctype="multipart/form-data" pjax-container>
+                <form id="post-form" class="form-horizontal" action="{{ route('admin::categories.update',$category->id) }}" method="post" enctype="multipart/form-data" pjax-container>
                     {{ csrf_field() }}
+                    {{ method_field('PUT') }}
                     <div class="box-body">
                         <div class="fields-group">
                             <div class="form-group">
@@ -23,7 +24,7 @@
                                 <div class="col-sm-8">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
-                                        <input type="text" id="name" name="name" value="" class="form-control" placeholder="输入 类型名称">
+                                        <input type="text" id="name" name="name" value="{{ $category->name }}" class="form-control" placeholder="输入 类型名称">
                                     </div>
                                 </div>
                             </div>
@@ -32,7 +33,7 @@
                                 <div class="col-sm-8">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
-                                        <input type="text" id="subject" name="subject" value="" class="form-control" placeholder="输入 科目">
+                                        <input type="text" id="subject" name="subject" value="{{ $category->subject }}" class="form-control" placeholder="输入 科目">
                                     </div>
                                 </div>
                             </div>
@@ -41,7 +42,7 @@
                                 <div class="col-sm-8">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
-                                        <textarea name="introduction" id="introduction" rows="8" class="form-control" placeholder="输入 简介"></textarea>
+                                        <textarea name="introduction" id="introduction" rows="8" class="form-control" placeholder="输入 简介">{{ $category->introduction }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -56,7 +57,7 @@
                                 <label for="order" class="col-sm-2 control-label">排序序号</label>
                                 <div class="col-sm-8">
                                     <div class="input-group">
-                                        <input type="text" id="order" name="order" value="0" class="form-control order" placeholder="输入 排序序号">
+                                        <input type="text" id="order" name="order" value="{{ $category->order }}" class="form-control order" placeholder="输入 排序序号">
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +65,7 @@
                                 <label for="status" class="col-sm-2 control-label">是否启用</label>
                                 <div class="col-sm-8">
                                     <input type="checkbox" class="status la_checkbox" checked/>
-                                    <input type="hidden" class="status" name="status" value="1"/>
+                                    <input type="hidden" class="status" name="status" value="{{ $category->status }}"/>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +142,11 @@
                                 url: "{{ route('admin::categories.check') }}" ,
                                 message: '该分类已存在',
                                 delay: 200,
-                                type: 'get'
+                                type: 'get',
+                                data :{
+                                    name: $('#name').val(),
+                                    current_name: "{{ $category->name }}"
+                                },
                             },
                         }
                     },
@@ -179,6 +184,12 @@
 
             $("#submit-btn").click(function () {
                 var $form = $("#post-form");
+                var name = $("#name").val();  
+                if(name == "{{$category->name}}") {  
+                    $('#post-form').bootstrapValidator('enableFieldValidators', 'name', false);  
+                } else {  
+                    $('#post-form').bootstrapValidator('enableFieldValidators', 'name', true);
+                }
 
                 $form.bootstrapValidator('validate');
                 if ($form.data('bootstrapValidator').isValid()) {

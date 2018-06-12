@@ -23,8 +23,8 @@ class CategoryController extends Controller
     {
         config(['admin.header'=>'树木管理','admin.description'=>'树木分类']);
 
-        //$data=$this->screening_conditions(request());
-        $categories = Category::orderBy('order','desc')->orderBy('created_at','desc')->paginate(10);
+        $data=$this->screening_conditions(request());
+        $categories = Category::orderBy('order','desc')->orderBy('created_at','desc')->where($data)->paginate(10);
 
         return view('admin::trees.categories',compact('categories'));
     }
@@ -35,7 +35,8 @@ class CategoryController extends Controller
         return view('admin::trees.category-create');
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $path = $request->file('image_url')->store('covers','public');
         $category = new Category();
         $category->name = $request->name;
@@ -48,8 +49,16 @@ class CategoryController extends Controller
         return redirect()->route('admin::categories.index');
     }
 
-    public function edit(Category $category){
+    public function edit(Category $category)
+    {
+        config(['admin.header'=>'树木分类','admin.description'=>'编辑']);
+        return view('admin::trees.category-edit',compact('category'));
+    }
 
+    public function destroy(Category $category)
+    {
+        $categroy->delete();
+        return response()->json(['status' => 1,'message' => '成功']);
     }
 
     public function checkName(Request $request)
@@ -66,5 +75,18 @@ class CategoryController extends Controller
         }
         return '{"valid":true}';
 
+    }
+
+    protected function screening_conditions($request)
+    {
+        $data=[];
+        if($request->get('name')) {
+            $data[] = ['name','like','%'.$request->get('name').'%'];
+        }
+        if($request->get('status') != '') {
+            $data[] = ['status','=',$request->get('status')];
+        }
+
+        return $data;
     }
 }

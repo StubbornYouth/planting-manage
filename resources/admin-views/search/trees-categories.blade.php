@@ -8,13 +8,13 @@
                 </button>
                 <h4 class="modal-title" id="myModalLabel">筛选</h4>
             </div>
-            <form action="{{ route('admin::areas.index') }}" method="get" pjax-container>
+            <form action="{{ route('admin::categories.index') }}" method="get" pjax-container>
                 <div class="modal-body">
                     <div class="form">
                         <div class="form-group">
                             <div class="form-group">
-                                <label>区域名称</label>
-                                <input type="text" class="form-control" placeholder="区域名称" name="name" value="{{ request('name') }}">
+                                <label>分类名称</label>
+                                <input type="text" class="form-control" placeholder="分类名称" name="name" value="{{ request('name') }}">
                             </div>
                         </div>
                         <div class="form-group">

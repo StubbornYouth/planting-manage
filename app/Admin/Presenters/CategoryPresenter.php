@@ -8,14 +8,13 @@ class CategoryPresenter
 {
     public function introduction($obj)
     {
-        $lable= '<button type="button" class="btn btn-link btn-sm popover-show" title="分类简介" data-container="body" data-toggle="popover" data-placement="right" data-content="'.$obj->introduction.'">查看</button>';
+        $lable= '<button type="button" class="btn btn-link btn-sm popover-show" title="分类简介" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="'.$obj->introduction.'">查看</button>';
         return $lable;
     }
 
     public function imageUrl($obj)
     {
-        $url = Storage::url($obj->image_url);
-        return "<img src='$url' width='50' class='img-circle' height='50'/>";
+        return '<button type="button" class="btn btn-link btn-sm show-image" data-toggle="modal" data-target="#myModal" data-img="'.Storage::url($obj->image_url).'">预览</button>';
     }
 
     /**

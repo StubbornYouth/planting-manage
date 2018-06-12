@@ -63,4 +63,11 @@
 
 @section('script')
     @include('admin::js.grid-row-delete', ['url' => route('admin::areas.index')])
+     <script>
+        $("#filter-modal .submit").click(function () {
+            $("#filter-modal").modal('toggle');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        });
+    </script>
 @endsection
